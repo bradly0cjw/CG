@@ -7,7 +7,12 @@
 float objX = 0.0f;
 float objY = 0.0f;
 float objZ = 0.0f;
-float objScale = 5.0f;
+
+// Separate scaling for each axis
+float objScaleX = 5.0f;
+float objScaleY = 5.0f;
+float objScaleZ = 5.0f;
+
 float objRotX = 0.0f;
 float objRotY = 0.0f;
 float objRotZ = 0.0f;
@@ -37,7 +42,6 @@ int main(int argc, char** argv)
 
 void Idle(void)
 {
-	// No auto-rotation
 	glutPostRedisplay();
 }
 
@@ -47,24 +51,34 @@ void Keyboard(unsigned char key, int x, int y)
 	float scaleStep = 0.5f;
 	float rotStep = 5.0f;
 	switch (key) {
+	// Movement
 	case 'x': objX -= step; break;
 	case 'X': objX += step; break;
 	case 'y': objY -= step; break;
 	case 'Y': objY += step; break;
 	case 'z': objZ -= step; break;
 	case 'Z': objZ += step; break;
-	case 's': objScale -= scaleStep; if (objScale < 0.1f) objScale = 0.1f; break;
-	case 'S': objScale += scaleStep; break;
+	
+	// Separate Scaling
+	case 'u': objScaleX -= scaleStep; if (objScaleX < 0.1f) objScaleX = 0.1f; break;
+	case 'U': objScaleX += scaleStep; break;
+	case 'i': objScaleY -= scaleStep; if (objScaleY < 0.1f) objScaleY = 0.1f; break;
+	case 'I': objScaleY += scaleStep; break;
+	case 'o': objScaleZ -= scaleStep; if (objScaleZ < 0.1f) objScaleZ = 0.1f; break;
+	case 'O': objScaleZ += scaleStep; break;
+
+	// Rotation
 	case 'j': objRotX -= rotStep; break;
 	case 'J': objRotX += rotStep; break;
 	case 'k': objRotY -= rotStep; break;
 	case 'K': objRotY += rotStep; break;
 	case 'l': objRotZ -= rotStep; break;
 	case 'L': objRotZ += rotStep; break;
+
 	case 'r':
 	case 'R':
 		objX = 0.0f; objY = 0.0f; objZ = 0.0f;
-		objScale = 5.0f;
+		objScaleX = 5.0f; objScaleY = 5.0f; objScaleZ = 5.0f;
 		objRotX = 0.0f; objRotY = 0.0f; objRotZ = 0.0f;
 		break;
 	case 27: // ESC
@@ -80,10 +94,7 @@ void ChangeSize(int w, int h)
 	glViewport(0, 0, w, h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-
-	// Large clipping volume for orthographic view
 	glOrtho(-50, 50, -50, 50, -500, 500);
-
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
@@ -91,12 +102,9 @@ void ChangeSize(int w, int h)
 void DrawAxes()
 {
 	glBegin(GL_LINES);
-	// X-axis (Red)
 	glColor3f(1.0f, 0.0f, 0.0f); glVertex3f(-50.0f, 0.0f, 0.0f); glVertex3f(50.0f, 0.0f, 0.0f);
-	// Y-axis (Green)
 	glColor3f(0.0f, 1.0f, 0.0f); glVertex3f(0.0f, -50.0f, 0.0f); glVertex3f(0.0f, 50.0f, 0.0f);
-	// Z-axis (Blue)
-	glColor3f(0.0f, 0.0f, 1.0f); glVertex3f(0.0f, 0.0f, -50.0f); glVertex3f(0.0f, 0.0f, 50.0f);
+	glColor3f(0.0f, 0.0f, 1.0f); glVertex3f(0.0f, 0.0f, -50.0f); glVertex3f(0.0f, 0.0f, 100.0f);
 	glEnd();
 }
 
@@ -116,20 +124,17 @@ void RenderScene(void)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	// Fixed Camera at 45 degrees (15, 15, 15) facing 0,0,0
 	gluLookAt(15.0f, 15.0f, 15.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
 	DrawAxes();
 
 	glPushMatrix();
-	// Apply object transformations: Translate -> Scale -> Rotate
 	glTranslatef(objX, objY, objZ);
-	glScalef(objScale, objScale, objScale);
+	glScalef(objScaleX, objScaleY, objScaleZ);
 	glRotatef(objRotX, 1.0f, 0.0f, 0.0f);
 	glRotatef(objRotY, 0.0f, 1.0f, 0.0f);
 	glRotatef(objRotZ, 0.0f, 0.0f, 1.0f);
 
-	// Centered CM (Z from -1 to 1)
 	glBegin(GL_TRIANGLES);
 	// Front
 	glColor3f(0.7f, 0.7f, 0.7f); glVertex3f(0.0f, 1.0f, 1.0f); glVertex3f(-0.86f, -0.5f, 1.0f); glVertex3f(0.86f, -0.5f, 1.0f);
@@ -161,7 +166,7 @@ void RenderScene(void)
 	glColor3f(1.0f, 1.0f, 1.0f);
 	RenderText(10, 580, "Keybindings:");
 	RenderText(10, 560, "X/x, Y/y, Z/z: Move Object");
-	RenderText(10, 540, "S/s: Scale Object (Up/Down)");
+	RenderText(10, 540, "U/u, I/i, O/o: Scale Object (X/Y/Z)");
 	RenderText(10, 520, "J/j, K/k, L/l: Rotate Object (X/Y/Z)");
 	RenderText(10, 500, "R/r: Reset Object");
 	glPopMatrix();

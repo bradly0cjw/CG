@@ -34,12 +34,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
@@ -52,7 +48,7 @@
               "RelativeDocumentMoniker": "lab3.cpp",
               "ToolTip": "C:\\Users\\CYPONE\\Documents\\GitHub\\NTUT\\CG\\Project1\\lab3.cpp",
               "RelativeToolTip": "lab3.cpp",
-              "ViewState": "AgIAAG0AAAAAAAAAAAAAAIUAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAFoAAAAAAAAAAAAAALIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2026-04-01T07:24:05.356Z",
               "EditorCaption": ""
@@ -67,8 +63,7 @@
               "RelativeToolTip": "rec.cpp",
               "ViewState": "AgIAACoAAAAAAAAAAAAAADwAAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-03-18T08:16:57.736Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-18T08:16:57.736Z"
             },
             {
               "$type": "Document",
@@ -80,8 +75,7 @@
               "RelativeToolTip": "temp1.cpp",
               "ViewState": "AgIAANkAAAAAAAAAAAAwwAcBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-03-18T08:15:45.073Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-18T08:15:45.073Z"
             },
             {
               "$type": "Document",
@@ -93,8 +87,7 @@
               "RelativeToolTip": "demo.cpp",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAI4AAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-03-18T07:43:42.836Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-18T07:43:42.836Z"
             },
             {
               "$type": "Document",
@@ -106,8 +99,7 @@
               "RelativeToolTip": "tri_prism.cpp",
               "ViewState": "AgIAAFgAAAAAAAAAAAAwwIYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-03-18T07:21:20.238Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-18T07:21:20.238Z"
             },
             {
               "$type": "Document",
@@ -119,8 +111,7 @@
               "RelativeToolTip": "nickolas_wild.cpp",
               "ViewState": "AgIAANAAAAAAAAAAAAAwwP4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-03-18T07:06:34.73Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-18T07:06:34.73Z"
             }
           ]
         }

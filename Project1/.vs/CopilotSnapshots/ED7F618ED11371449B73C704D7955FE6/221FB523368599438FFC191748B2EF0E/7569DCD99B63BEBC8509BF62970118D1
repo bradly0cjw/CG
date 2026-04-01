@@ -1,0 +1,117 @@
+﻿#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include ".\GL\freeglut.h"
+
+void ChangeSize(int, int);
+void RenderScene(void);
+void Menu(int index);
+
+int _shadeModel = GL_FLAT;
+
+void Menu(int index) {
+    switch (index) {
+    case 1: _shadeModel = GL_SMOOTH; break;
+    case 2: _shadeModel = GL_FLAT; break;
+    }
+    glutPostRedisplay();
+}
+
+int main(int argc, char** argv)
+{
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitWindowSize(800, 600);
+    glutInitWindowPosition(400, 80);
+    glutCreateWindow("Simple Rectangle");
+
+    glutCreateMenu(Menu);
+    glutAddMenuEntry("smooth", 1);
+    glutAddMenuEntry("flat", 2);
+    glutAttachMenu(GLUT_RIGHT_BUTTON);
+
+    glEnable(GL_DEPTH_TEST);
+
+    glutReshapeFunc(ChangeSize);
+    glutDisplayFunc(RenderScene);
+    glutMainLoop();
+    return 0;
+}
+
+void ChangeSize(int w, int h)
+{
+    if (h == 0) h = 1;
+    glViewport(0, 0, w, h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    float aspect = (float)w / (float)h;
+    gluOrtho2D(-4.0 * aspect, 4.0 * aspect, -4.0, 4.0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+}
+
+void RenderScene(void)
+{
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+    glShadeModel(_shadeModel);
+
+    // Draw Orange Head
+    glBegin(GL_TRIANGLES);
+    // Triangle 1 (left side of head)
+    glColor3f(1.0f, 0.65f, 0.0f);  // Orange
+    glVertex2f(-1.5f, 1.5f);
+    glColor3f(1.0f, 0.8f, 0.2f);   // Light orange
+    glVertex2f(-0.5f, 2.5f);
+    glColor3f(0.9f, 0.55f, 0.0f);  // Dark orange
+    glVertex2f(-0.5f, 1.5f);
+
+    // Triangle 2 (right side of head)
+    glColor3f(1.0f, 0.65f, 0.0f);  // Orange
+    glVertex2f(0.5f, 1.5f);
+    glColor3f(1.0f, 0.8f, 0.2f);   // Light orange
+    glVertex2f(0.5f, 2.5f);
+    glColor3f(0.9f, 0.55f, 0.0f);  // Dark orange
+    glVertex2f(1.5f, 1.5f);
+
+    // Triangle 3 (top center of head)
+    glColor3f(1.0f, 0.8f, 0.2f);   // Light orange
+    glVertex2f(-0.5f, 2.5f);
+    glColor3f(1.0f, 0.8f, 0.2f);
+    glVertex2f(0.5f, 2.5f);
+    glColor3f(0.95f, 0.7f, 0.1f);
+    glVertex2f(0.0f, 3.0f);
+    glEnd();
+
+    // Draw Green Trapezoid Body
+    glBegin(GL_TRIANGLES);
+    // Left triangle of trapezoid
+    glColor3f(0.2f, 0.6f, 0.2f);   // Green
+    glVertex2f(-1.5f, 1.5f);
+    glColor3f(0.15f, 0.5f, 0.15f); // Dark green
+    glVertex2f(-0.8f, -0.5f);
+    glColor3f(0.25f, 0.65f, 0.25f);
+    glVertex2f(-0.5f, 1.5f);
+
+    // Right triangle of trapezoid
+    glColor3f(0.2f, 0.6f, 0.2f);   // Green
+    glVertex2f(1.5f, 1.5f);
+    glColor3f(0.25f, 0.65f, 0.25f);
+    glVertex2f(0.5f, 1.5f);
+    glColor3f(0.15f, 0.5f, 0.15f); // Dark green
+    glVertex2f(0.8f, -0.5f);
+
+    // Bottom triangle
+    glColor3f(0.15f, 0.5f, 0.15f); // Dark green
+    glVertex2f(-0.8f, -0.5f);
+    glColor3f(0.2f, 0.6f, 0.2f);
+    glVertex2f(0.8f, -0.5f);
+    glColor3f(0.25f, 0.65f, 0.25f);
+    glVertex2f(0.0f, -1.0f);
+    glEnd();
+
+    glutSwapBuffers();
+}

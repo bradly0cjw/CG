@@ -1,0 +1,75 @@
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <math.h>
+//#include ".\GL\freeglut.h"
+//
+//void ChangeSize(int, int);
+//void RenderScene(void);
+//void Menu(int index);
+//
+//int _shadeModel = GL_FLAT;
+//
+//void Menu(int index) {
+//    switch (index) {
+//    case 1: _shadeModel = GL_SMOOTH; break;
+//    case 2: _shadeModel = GL_FLAT; break;
+//    }
+//    glutPostRedisplay();
+//}
+//
+//int main(int argc, char** argv)
+//{
+//    glutInit(&argc, argv);
+//    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+//    glutInitWindowSize(800, 600);
+//    glutInitWindowPosition(400, 80);
+//    glutCreateWindow("Rectangle Shade Model");
+//
+//    glutCreateMenu(Menu);
+//    glutAddMenuEntry("Smooth Shading", 1);
+//    glutAddMenuEntry("Flat Shading", 2);
+//    glutAttachMenu(GLUT_RIGHT_BUTTON);
+//
+//    glEnable(GL_DEPTH_TEST);
+//
+//    glutReshapeFunc(ChangeSize);
+//    glutDisplayFunc(RenderScene);
+//    glutMainLoop();
+//    return 0;
+//}
+//
+//void ChangeSize(int w, int h)
+//{
+//    if (h == 0) h = 1;
+//    glViewport(0, 0, w, h);
+//    glMatrixMode(GL_PROJECTION);
+//    glLoadIdentity();
+//
+//    float aspect = (float)w / (float)h;
+//    gluOrtho2D(-4.0 * aspect, 4.0 * aspect, -4.0, 4.0);
+//
+//    glMatrixMode(GL_MODELVIEW);
+//    glLoadIdentity();
+//}
+//
+//void RenderScene(void)
+//{
+//    glClearColor(0.9f, 0.9f, 0.9f, 1.0f);
+//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//    glLoadIdentity();
+//    glShadeModel(_shadeModel);
+//
+//    // Draw a triangle with gradient
+//    glBegin(GL_TRIANGLES);
+//    glColor3f(0.0f, 1.0f, 0.0f); // Red to green
+//    glVertex2f(0.0f, 2.0f);
+//    
+//    glColor3f(0.0f, 0.0f, 1.0f); // Green to blue
+//    glVertex2f(-2.0f, -1.0f);
+//    
+//    glColor3f(1.0f, 0.0f, 0.0f); // Blue to red
+//    glVertex2f(2.0f, -1.0f);
+//    glEnd();
+//
+//    glutSwapBuffers();
+//}

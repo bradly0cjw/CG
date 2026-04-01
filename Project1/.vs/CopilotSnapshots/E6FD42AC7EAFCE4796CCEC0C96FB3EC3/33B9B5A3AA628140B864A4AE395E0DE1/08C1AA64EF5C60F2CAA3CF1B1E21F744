@@ -1,0 +1,103 @@
+﻿#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include ".\GL\freeglut.h"
+
+void ChangeSize(int, int);
+void RenderScene(void);
+
+int main(int argc, char** argv)
+{
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitWindowSize(800, 600);
+    glutInitWindowPosition(400, 80);
+    glutCreateWindow("Triangular Prism");
+
+    glEnable(GL_DEPTH_TEST);
+
+    glutReshapeFunc(ChangeSize);
+    glutDisplayFunc(RenderScene);
+    glutMainLoop();
+    return 0;
+}
+
+void ChangeSize(int w, int h)
+{
+    if (h == 0) h = 1;
+    glViewport(0, 0, w, h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    gluPerspective(45.0f, (float)w / (float)h, 0.1f, 100.0f);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+}
+
+void RenderScene(void)
+{
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+    
+    glTranslatef(0.0f, 0.0f, -5.0f);
+    glRotatef(45.0f, 1.0f, 1.0f, 0.0f);
+
+    // Top triangular face - Red
+    glBegin(GL_TRIANGLES);
+    glColor3f(1.0f, 0.0f, 0.0f); // Red
+    glVertex3f(-1.0f, 1.0f, -1.0f);
+    glVertex3f(1.0f, 1.0f, -1.0f);
+    glVertex3f(0.0f, 1.0f, 1.0f);
+    glEnd();
+
+    // Bottom triangular face - Dark Green
+    glBegin(GL_TRIANGLES);
+    glColor3f(0.0f, 0.5f, 0.0f); // Dark Green
+    glVertex3f(-1.0f, -1.0f, -1.0f);
+    glVertex3f(1.0f, -1.0f, -1.0f);
+    glVertex3f(0.0f, -1.0f, 1.0f);
+    glEnd();
+
+    // Front rectangular face (left side) - Green (2 triangles)
+    glBegin(GL_TRIANGLES);
+    glColor3f(0.0f, 1.0f, 0.0f); // Green
+    // Triangle 1
+    glVertex3f(-1.0f, 1.0f, -1.0f);
+    glVertex3f(-1.0f, -1.0f, -1.0f);
+    glVertex3f(0.0f, 1.0f, 1.0f);
+    // Triangle 2
+    glVertex3f(-1.0f, -1.0f, -1.0f);
+    glVertex3f(0.0f, -1.0f, 1.0f);
+    glVertex3f(0.0f, 1.0f, 1.0f);
+    glEnd();
+
+    // Right rectangular face - Magenta (2 triangles)
+    glBegin(GL_TRIANGLES);
+    glColor3f(1.0f, 0.0f, 1.0f); // Magenta
+    // Triangle 1
+    glVertex3f(1.0f, 1.0f, -1.0f);
+    glVertex3f(1.0f, -1.0f, -1.0f);
+    glVertex3f(0.0f, 1.0f, 1.0f);
+    // Triangle 2
+    glVertex3f(1.0f, -1.0f, -1.0f);
+    glVertex3f(0.0f, -1.0f, 1.0f);
+    glVertex3f(0.0f, 1.0f, 1.0f);
+    glEnd();
+
+    // Bottom rectangular face - Maroon/Dark Red (2 triangles)
+    glBegin(GL_TRIANGLES);
+    glColor3f(0.5f, 0.0f, 0.0f); // Maroon
+    // Triangle 1
+    glVertex3f(-1.0f, 1.0f, -1.0f);
+    glVertex3f(-1.0f, -1.0f, -1.0f);
+    glVertex3f(1.0f, 1.0f, -1.0f);
+    // Triangle 2
+    glVertex3f(-1.0f, -1.0f, -1.0f);
+    glVertex3f(1.0f, -1.0f, -1.0f);
+    glVertex3f(1.0f, 1.0f, -1.0f);
+    glEnd();
+
+    glutSwapBuffers();
+}

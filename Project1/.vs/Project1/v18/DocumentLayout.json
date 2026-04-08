@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\CYPONE\\Documents\\GitHub\\NTUT\\CG\\Project1\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{07ED001C-B5F9-49B2-AB5F-394265A0C5E9}|Project1.vcxproj|C:\\Users\\CYPONE\\Documents\\GitHub\\NTUT\\CG\\Project1\\lab4.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{07ED001C-B5F9-49B2-AB5F-394265A0C5E9}|Project1.vcxproj|solutionrelative:lab4.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{07ED001C-B5F9-49B2-AB5F-394265A0C5E9}|Project1.vcxproj|C:\\Users\\CYPONE\\Documents\\GitHub\\NTUT\\CG\\Project1\\lab3.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{07ED001C-B5F9-49B2-AB5F-394265A0C5E9}|Project1.vcxproj|solutionrelative:lab3.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
@@ -43,19 +47,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "lab4.cpp",
+              "DocumentMoniker": "C:\\Users\\CYPONE\\Documents\\GitHub\\NTUT\\CG\\Project1\\lab4.cpp",
+              "RelativeDocumentMoniker": "lab4.cpp",
+              "ToolTip": "C:\\Users\\CYPONE\\Documents\\GitHub\\NTUT\\CG\\Project1\\lab4.cpp",
+              "RelativeToolTip": "lab4.cpp",
+              "ViewState": "AgIAABQAAAAAAAAAAAAgwCoAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-04-08T05:45:30.282Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "lab3.cpp",
               "DocumentMoniker": "C:\\Users\\CYPONE\\Documents\\GitHub\\NTUT\\CG\\Project1\\lab3.cpp",
               "RelativeDocumentMoniker": "lab3.cpp",
               "ToolTip": "C:\\Users\\CYPONE\\Documents\\GitHub\\NTUT\\CG\\Project1\\lab3.cpp",
               "RelativeToolTip": "lab3.cpp",
-              "ViewState": "AgIAAFoAAAAAAAAAAAAAALIAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAIQAAAAAAAAAAAAwwLIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2026-04-01T07:24:05.356Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "rec.cpp",
               "DocumentMoniker": "C:\\Users\\CYPONE\\Documents\\GitHub\\NTUT\\CG\\Project1\\rec.cpp",
               "RelativeDocumentMoniker": "rec.cpp",
@@ -67,7 +84,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "temp1.cpp",
               "DocumentMoniker": "C:\\Users\\CYPONE\\Documents\\GitHub\\NTUT\\CG\\Project1\\temp1.cpp",
               "RelativeDocumentMoniker": "temp1.cpp",
@@ -79,7 +96,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "demo.cpp",
               "DocumentMoniker": "C:\\Users\\CYPONE\\Documents\\GitHub\\NTUT\\CG\\Project1\\demo.cpp",
               "RelativeDocumentMoniker": "demo.cpp",
@@ -91,7 +108,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "tri_prism.cpp",
               "DocumentMoniker": "C:\\Users\\CYPONE\\Documents\\GitHub\\NTUT\\CG\\Project1\\tri_prism.cpp",
               "RelativeDocumentMoniker": "tri_prism.cpp",
@@ -103,7 +120,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "nickolas_wild.cpp",
               "DocumentMoniker": "C:\\Users\\CYPONE\\Documents\\GitHub\\NTUT\\CG\\Project1\\nickolas_wild.cpp",
               "RelativeDocumentMoniker": "nickolas_wild.cpp",

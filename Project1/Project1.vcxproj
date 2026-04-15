@@ -131,6 +131,7 @@
     <ClCompile Include="demo.cpp" />
     <ClCompile Include="lab3.cpp" />
     <ClCompile Include="lab4.cpp" />
+    <ClCompile Include="lab5.cpp" />
     <ClCompile Include="nickolas_wild.cpp" />
     <ClCompile Include="rec.cpp" />
     <ClCompile Include="temp1.cpp" />

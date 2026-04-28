@@ -1,0 +1,20 @@
+# Test Cube
+v -10.0 -10.0  10.0
+v  10.0 -10.0  10.0
+v  10.0  10.0  10.0
+v -10.0  10.0  10.0
+v -10.0 -10.0 -10.0
+v  10.0 -10.0 -10.0
+v  10.0  10.0 -10.0
+v -10.0  10.0 -10.0
+
+# Faces with various formatting
+f 1 2 3 4
+f 8 7 6 5
+f 4 3 7 8
+f 5 1 4 8
+f 5 6 2 1
+f 2 6 7 3
+
+# Test ignore invalid character
+t 0 0 0 0

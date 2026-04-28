@@ -1,2 +1,2 @@
-# Template
-## Junior Spring Semester 2025
+# Computer Graphics
+## Senior Spring Semester 2026

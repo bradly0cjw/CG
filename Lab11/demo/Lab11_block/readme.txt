@@ -1,0 +1,1 @@
+Press Space key 4 or 5 times

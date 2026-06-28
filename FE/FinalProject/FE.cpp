@@ -17,7 +17,9 @@
 #ifdef _WIN32
 // Compile-time configuration: set to 1 to enable Xbox controller support (requires linking -lxinput9_1_0 on Windows),
 // or set to 0 to disable it and build a pure standard cross-platform GLUT project.
-#define ENABLE_CONTROLLER 1
+#ifndef ENABLE_CONTROLLER
+#define ENABLE_CONTROLLER 0
+#endif
 
 #if ENABLE_CONTROLLER
 #include <windows.h>
@@ -1499,6 +1501,17 @@ void DrawCity(GLint nShadow)
 // This function does any needed initialization on the rendering context.
 void SetupRC()
 {
+    // Log depth and stencil bits
+    std::ofstream debugLog("opengl_debug.log");
+    if (debugLog.is_open()) {
+        GLint depthBits, stencilBits;
+        glGetIntegerv(GL_DEPTH_BITS, &depthBits);
+        glGetIntegerv(GL_STENCIL_BITS, &stencilBits);
+        debugLog << "Depth Buffer Bits: " << depthBits << std::endl;
+        debugLog << "Stencil Buffer Bits: " << stencilBits << std::endl;
+        debugLog.close();
+    }
+
     M3DVector3f vPoints[3] = {{0.0f, -0.4f, 0.0f},
                               {10.0f, -0.4f, 0.0f},
                               {5.0f, -0.4f, -5.0f}};
@@ -1512,7 +1525,7 @@ void SetupRC()
     // draws into it. When stencil function is enabled, only write where
     // stencil value is zero. This prevents the transparent shadow from drawing
     // over itself
-    glStencilOp(GL_INCR, GL_INCR, GL_INCR);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
     glClearStencil(0);
     glStencilFunc(GL_EQUAL, 0x0, 0x01);
 
@@ -1863,7 +1876,7 @@ void DrawCenterParkGrass(void)
 }
 
 // Draw random inhabitants, spinning humanoid robot, orbiting orange sphere, and flying AI drone
-void DrawInhabitants(GLint nShadow)
+void DrawInhabitants(GLint nShadow, bool isLight1 = false)
 {
     static GLfloat yRot = 0.0f; // Rotation angle for central robot
     GLint i;
@@ -1922,13 +1935,16 @@ void DrawInhabitants(GLint nShadow)
     glPopMatrix();
 
     // Draw central spinning giant robot (now placed in the center of the park at (0, 0, 0))
-    if (nShadow == 0)
-        glMaterialfv(GL_FRONT, GL_SPECULAR, fLowSpecular);
-    glPushMatrix();
-    glTranslatef(0.0f, 0.1f, 0.0f);
-    glRotatef(yRot, 0.0f, 1.0f, 0.0f);
-    DrawRobot(nShadow);
-    glPopMatrix();
+    if (!isLight1 || nShadow == 0)
+    {
+        if (nShadow == 0)
+            glMaterialfv(GL_FRONT, GL_SPECULAR, fLowSpecular);
+        glPushMatrix();
+        glTranslatef(0.0f, 0.1f, 0.0f);
+        glRotatef(yRot, 0.0f, 1.0f, 0.0f);
+        DrawRobot(nShadow);
+        glPopMatrix();
+    }
 
     // Draw 8 loaded AI delivery drones flying in different orbits
     struct DroneConfig
@@ -2107,21 +2123,28 @@ void SetupDynamicStreetlights(void)
         lamps[i].distSq = dx * dx + dz * dz;
     }
 
+    // Create a local copy of lamps for sorting to prevent in-place swapping from shuffling the static lamps array
+    LightInfo sortedLamps[NUM_LAMPS];
+    for (int i = 0; i < NUM_LAMPS; i++)
+    {
+        sortedLamps[i] = lamps[i];
+    }
+
     for (int i = 0; i < 4; i++)
     {
         int minDistIdx = i;
         for (int j = i + 1; j < NUM_LAMPS; j++)
         {
-            if (lamps[j].distSq < lamps[minDistIdx].distSq)
+            if (sortedLamps[j].distSq < sortedLamps[minDistIdx].distSq)
             {
                 minDistIdx = j;
             }
         }
         if (minDistIdx != i)
         {
-            LightInfo tmp = lamps[i];
-            lamps[i] = lamps[minDistIdx];
-            lamps[minDistIdx] = tmp;
+            LightInfo tmp = sortedLamps[i];
+            sortedLamps[i] = sortedLamps[minDistIdx];
+            sortedLamps[minDistIdx] = tmp;
         }
     }
 
@@ -2130,12 +2153,12 @@ void SetupDynamicStreetlights(void)
     {
         GLenum lightEnum = GL_LIGHT2 + l;
 
-        GLfloat position[4] = {lamps[l].x, lamps[l].y, lamps[l].z, 1.0f};
+        GLfloat position[4] = {sortedLamps[l].x, sortedLamps[l].y, sortedLamps[l].z, 1.0f};
         glLightfv(lightEnum, GL_POSITION, position);
 
-        GLfloat ambient[4] = {lamps[l].r * 0.15f, lamps[l].g * 0.15f, lamps[l].b * 0.15f, 1.0f};
-        GLfloat diffuse[4] = {lamps[l].r * 0.85f, lamps[l].g * 0.85f, lamps[l].b * 0.85f, 1.0f};
-        GLfloat specular[4] = {lamps[l].r * 0.85f, lamps[l].g * 0.85f, lamps[l].b * 0.85f, 1.0f};
+        GLfloat ambient[4] = {sortedLamps[l].r * 0.15f, sortedLamps[l].g * 0.15f, sortedLamps[l].b * 0.15f, 1.0f};
+        GLfloat diffuse[4] = {sortedLamps[l].r * 0.85f, sortedLamps[l].g * 0.85f, sortedLamps[l].b * 0.85f, 1.0f};
+        GLfloat specular[4] = {sortedLamps[l].r * 0.85f, sortedLamps[l].g * 0.85f, sortedLamps[l].b * 0.85f, 1.0f};
 
         glLightfv(lightEnum, GL_AMBIENT, ambient);
         glLightfv(lightEnum, GL_DIFFUSE, diffuse);
@@ -2153,8 +2176,8 @@ void SetupDynamicStreetlights(void)
         glLightf(lightEnum, GL_QUADRATIC_ATTENUATION, 0.002f);
 
         // Overdrive light intensities (more brighter and stronger)
-        GLfloat strongerDiffuse[] = {lamps[l].r * 4.5f, lamps[l].g * 4.5f, lamps[l].b * 4.5f, 1.0f};
-        GLfloat strongerSpecular[] = {lamps[l].r * 4.5f, lamps[l].g * 4.5f, lamps[l].b * 4.5f, 1.0f};
+        GLfloat strongerDiffuse[] = {sortedLamps[l].r * 4.5f, sortedLamps[l].g * 4.5f, sortedLamps[l].b * 4.5f, 1.0f};
+        GLfloat strongerSpecular[] = {sortedLamps[l].r * 4.5f, sortedLamps[l].g * 4.5f, sortedLamps[l].b * 4.5f, 1.0f};
         glLightfv(lightEnum, GL_DIFFUSE, strongerDiffuse);
         glLightfv(lightEnum, GL_SPECULAR, strongerSpecular);
 
@@ -2188,7 +2211,8 @@ void RenderTextOverlay(void)
     glPushMatrix();
     glLoadIdentity();
 
-    // Draw a semi-transparent dark background box for the overlay
+#if ENABLE_CONTROLLER
+    // Draw a semi-transparent dark background box for the overlay (larger for gamepad controls)
     glColor4f(0.0f, 0.0f, 0.0f, 0.6f);
     glBegin(GL_QUADS);
     glVertex2i(10, 10);
@@ -2204,7 +2228,7 @@ void RenderTextOverlay(void)
         "=== KEYBOARD CONTROLS ===",
         "W / S      : Move Forward / Backward",
         "A / D      : Strafe Left / Right",
-        "Q / 0      : Tilt Camera Up / Down",
+        "0 / Q      : Tilt Camera Up / Down",
         "Arrows LR  : Pan Camera Left / Right",
         "Arrows UD  : Fly Up / Down",
         "Keys [1]-[5]: Sunlight / Night Moon Modes",
@@ -2215,12 +2239,38 @@ void RenderTextOverlay(void)
         "Right Stick: Fly Up/Down & Turn Left/Right",
         "Triggers   : Tilt Camera Up / Down",
         "Buttons    : A (Pause), Y (Day/Night)",
-        "              : B (Glow), X (Outline)"};
+        "              : B (Outline), X (Glow)"};
     int numLines = sizeof(lines) / sizeof(lines[0]);
+    int startY = 220;
+#else
+    // Draw a semi-transparent dark background box for the overlay (smaller for keyboard only)
+    glColor4f(0.0f, 0.0f, 0.0f, 0.6f);
+    glBegin(GL_QUADS);
+    glVertex2i(10, 10);
+    glVertex2i(360, 10);
+    glVertex2i(360, 145);
+    glVertex2i(10, 145);
+    glEnd();
+
+    // Render keybinding hints
+    glColor3f(1.0f, 1.0f, 1.0f); // White text
+
+    const char *lines[] = {
+        "=== KEYBOARD CONTROLS ===",
+        "W / S      : Move Forward / Backward",
+        "A / D      : Strafe Left / Right",
+        "0 / Q      : Tilt Camera Up / Down",
+        "Arrows LR  : Pan Camera Left / Right",
+        "Arrows UD  : Fly Up / Down",
+        "Keys [1]-[5]: Sunlight / Night Moon Modes",
+        "G / O / P  : Toggle Glow / Outline / Pause"};
+    int numLines = sizeof(lines) / sizeof(lines[0]);
+    int startY = 125;
+#endif
 
     for (int i = 0; i < numLines; i++)
     {
-        glRasterPos2i(20, 220 - i * 15);
+        glRasterPos2i(20, startY - i * 15);
         const char *str = lines[i];
         while (*str)
         {
@@ -2355,7 +2405,7 @@ void RenderScene(void)
     // which projects inverted/infinite shadows that cover the entire road pavement in pitch black)
     glPushMatrix();
     glMultMatrixf(mShadowMatrix1);
-    DrawInhabitants(1);
+    DrawInhabitants(1, true);
     glPopMatrix();
 
     glDisable(GL_STENCIL_TEST);
@@ -2374,6 +2424,20 @@ void RenderScene(void)
 
     // Draw HUD text overlay at the bottom left
     RenderTextOverlay();
+
+    // Check for OpenGL errors and log them
+    GLenum err;
+    static int errorLogCount = 0;
+    while (errorLogCount < 100 && (err = glGetError()) != GL_NO_ERROR)
+    {
+        std::ofstream debugLog("opengl_debug.log", std::ios::app);
+        if (debugLog.is_open())
+        {
+            debugLog << "OpenGL Error in RenderScene: 0x" << std::hex << err << std::endl;
+            debugLog.close();
+        }
+        errorLogCount++;
+    }
 
     // Do the buffer Swap
     glutSwapBuffers();
@@ -2480,11 +2544,11 @@ public:
             vOrigin[2] -= vRightProj[2] * fSpeed;
             bMoved = true;
         }
-        if (keyState['q'] || keyState['Q'])
+        if (keyState['0'])
         {
             camera.RotateLocalX(-fRotSpeed);
         }
-        if (keyState['0'])
+        if (keyState['q'] || keyState['Q'])
         {
             camera.RotateLocalX(fRotSpeed);
         }
@@ -2610,6 +2674,18 @@ void TimerFunction(int value)
     // Delegate control updating to our unified InputManager
     InputManager::UpdateControls(frameCamera, vOrigin, bMoved, fSpeed, fRotSpeed);
 
+    // Clamp camera height to keep it above ground level and within safe rendering bounds
+    if (vOrigin[1] < 0.0f)
+    {
+        vOrigin[1] = 0.0f;
+        bMoved = true;
+    }
+    else if (vOrigin[1] > 120.0f)
+    {
+        vOrigin[1] = 120.0f;
+        bMoved = true;
+    }
+
     if (bMoved)
         frameCamera.SetOrigin(vOrigin);
 
@@ -2664,8 +2740,8 @@ void ChangeSize(int w, int h)
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    // Increased far clipping plane to 300.0f to prevent ground and moon clipping, and reduced near clipping plane to 0.01f to prevent close-up clipping
-    gluPerspective(35.0f, fAspect, 0.01f, 300.0f);
+    // Increased far clipping plane to 600.0f to prevent ground and moon clipping, and set near clipping plane to 0.3f to prevent Z-fighting/flickering
+    gluPerspective(35.0f, fAspect, 0.3f, 600.0f);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
